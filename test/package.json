@@ -1,0 +1,19 @@
+{
+  "name": "decorated-redux-test",
+  "private": true,
+  "version": "0.1.0",
+  "description": "",
+  "main": "./index.js",
+  "scripts": {
+    "prepublisha": "babel --out-dir . src --presets es2015",
+    "test": "cd test && tsc && mocha specs"
+  },
+  "author": "Rasmus Eneman <rasmus@eneman.eu>",
+  "license": "Apache-2.0",
+  "devDependencies": {
+    "chai": "^3.4.1",
+    "decorated-redux": "../",
+    "mocha": "^2.3.4",
+    "typescript": "^1.7.3"
+  }
+}
