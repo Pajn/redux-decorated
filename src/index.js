@@ -30,18 +30,30 @@ export function createReducer(initialState) {
   };
 }
 
+export function clone(object) {
+  return Array.isArray(object)
+    ? [...object]
+    : Object.assign({}, object);
+}
+
 export function updateIn(path, newValue, object) {
-  if (path.length > 1) {
+  if (Array.isArray(path) && path.length > 1) {
     newValue = updateIn(path.slice(1), newValue, object[path[0]]);
   }
 
-  let clone;
-  if (Array.isArray(object)) {
-    clone = [...object];
-  } else {
-    clone = Object.assign({}, object);
-  }
-  clone[path[0]] = newValue;
+  const cloned = clone(object);
+  cloned[path[0]] = newValue;
 
-  return clone;
+  return cloned;
+}
+
+export function removeIn(path, object) {
+  if (Array.isArray(path) && path.length > 1) {
+    newValue = removeIn(path.slice(1), object[path[0]]);
+  }
+
+  const cloned = clone(object);
+  delete cloned[path[0]];
+
+  return cloned;
 }

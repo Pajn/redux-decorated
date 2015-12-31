@@ -1,4 +1,6 @@
 declare module 'decorated-redux' {
+  type Key = string | number;
+
   export interface Class<T> {
     new (): T;
   }
@@ -13,7 +15,9 @@ declare module 'decorated-redux' {
   }
   export function createReducer<S extends {}>(initialState: S): ReducerBuilder<S>;
 
-  export function updateIn(path: Array<string | number>, newValue: any, object: any): any;
+  export function clone<T>(object: T): T;
+  export function updateIn(path: Key|Array<Key>, newValue: any, object: any): any;
+  export function removeIn(path: Key|Array<Key>, object: any): any;
 }
 
 declare module 'decorated-redux/react' {
