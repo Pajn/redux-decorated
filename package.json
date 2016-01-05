@@ -1,10 +1,11 @@
 {
   "name": "decorated-redux",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "",
   "main": "./index.js",
   "scripts": {
-    "prepublisha": "babel --out-dir . src --presets es2015",
+    "prepublish": "babel --out-dir . src --presets es2015",
+    "watch": "babel --out-dir . src --presets es2015 --watch",
     "test": "cd test && tsc && mocha specs"
   },
   "author": "Rasmus Eneman <rasmus@eneman.eu>",

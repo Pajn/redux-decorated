@@ -41,8 +41,9 @@ export function updateIn(path, newValue, object) {
     newValue = updateIn(path.slice(1), newValue, object[path[0]]);
   }
 
+  const key = Array.isArray(path) ? path[0] : path;
   const cloned = clone(object);
-  cloned[path[0]] = newValue;
+  cloned[key] = newValue;
 
   return cloned;
 }
@@ -52,8 +53,9 @@ export function removeIn(path, object) {
     newValue = removeIn(path.slice(1), object[path[0]]);
   }
 
+  const key = Array.isArray(path) ? path[0] : path;
   const cloned = clone(object);
-  delete cloned[path[0]];
+  delete cloned[key];
 
   return cloned;
 }
