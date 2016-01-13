@@ -1,4 +1,4 @@
-declare module 'decorated-redux' {
+declare module 'redux-decorated' {
   type Key = string | number;
 
   export interface Class<T> {
@@ -20,9 +20,9 @@ declare module 'decorated-redux' {
   export function removeIn(path: Key|Array<Key>, object: any): any;
 }
 
-declare module 'decorated-redux/react' {
+declare module 'redux-decorated/react' {
   import {Store} from 'redux';
-  import {Action} from 'decorated-redux';
+  import {Action} from 'redux-decorated';
   export interface StoreHelpers<State> {
     dispatch<T>(action: Action<T>, payload?: T): void;
     stateful(getState: (globalState: State) => Object): ClassDecorator;
