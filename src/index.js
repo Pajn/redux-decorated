@@ -15,17 +15,20 @@ export function createReducer(initialState) {
 
   return {
     when(action, handler) {
+      if (handler.length === 1) {
+        const origHandler = handler;
+        handler = (state, payload) => origHandler(payload)(state);
+      }
       actionHandlers.push({type: action.type, handler});
       return this;
     },
     build() {
-      return (state, action) => {
-        actionHandlers
+      return (state, action) => actionHandlers
           .filter(actionHandler => actionHandler.type === action.type)
-          .forEach(actionHandler => state = actionHandler.handler(state, action.payload));
-
-        return state || initialState;
-      };
+          .reduce(
+              (state, actionHandler) => actionHandler.handler(state, action.payload),
+              state || initialState
+          );
     },
   };
 }
@@ -33,12 +36,16 @@ export function createReducer(initialState) {
 export function clone(object) {
   return Array.isArray(object)
     ? [...object]
-    : Object.assign({}, object);
+    : {...object};
 }
 
 export function updateIn(path, newValue, object) {
+  if (arguments.length == 2) {
+    return (object) => updateIn(path, newValue, object);
+  }
+
   if (Array.isArray(path) && path.length > 1) {
-    newValue = updateIn(path.slice(1), newValue, object[path[0]]);
+    newValue = updateIn(path.slice(1), newValue, (object || {})[path[0]]);
   }
 
   const key = Array.isArray(path) ? path[0] : path;
@@ -49,8 +56,12 @@ export function updateIn(path, newValue, object) {
 }
 
 export function removeIn(path, object) {
+  if (arguments.length == 1) {
+    return (object) => removeIn(path, object);
+  }
+
   if (Array.isArray(path) && path.length > 1) {
-    newValue = removeIn(path.slice(1), object[path[0]]);
+    newValue = removeIn(path.slice(1), (object || {})[path[0]]);
   }
 
   const key = Array.isArray(path) ? path[0] : path;

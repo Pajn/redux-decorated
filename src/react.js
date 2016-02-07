@@ -9,7 +9,7 @@ export function reactStore(store) {
 
     stateful(getState) {
       return (target) => {
-        return (...args) => {
+        const component = (...args) => {
           const component = new target(...args);
           const {componentWillUnmount} = component;
           let dispose;
@@ -27,6 +27,15 @@ export function reactStore(store) {
 
           return component;
         };
+
+        const methods = Object.getOwnPropertyNames(target)
+            .filter(name => !['length', 'name', 'protoype'].includes(name));
+
+        for (const method of methods) {
+          component[method] = target[method];
+        }
+
+        return component;
       };
     },
   };

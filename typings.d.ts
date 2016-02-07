@@ -10,14 +10,17 @@ declare module 'redux-decorated' {
   }
   export function createActions<T>(ActionDefinitions: Class<T>): T;
   export interface ReducerBuilder<S> {
+    when<P>(action: Action<P>, handler: (payload: P) => (state: S) => S): ReducerBuilder<S>;
     when<P>(action: Action<P>, handler: (state: S, payload: P) => S): ReducerBuilder<S>;
     build(): any;
   }
   export function createReducer<S extends {}>(initialState: S): ReducerBuilder<S>;
 
   export function clone<T>(object: T): T;
-  export function updateIn(path: Key|Array<Key>, newValue: any, object: any): any;
-  export function removeIn(path: Key|Array<Key>, object: any): any;
+  export function updateIn<T>(path: Key|Array<Key>, newValue: any, object: T): T;
+  export function updateIn(path: Key|Array<Key>, newValue: any): (object) => any;
+  export function removeIn<T>(path: Key|Array<Key>, object: T): T;
+  export function removeIn(path: Key|Array<Key>): (object) => any;
 }
 
 declare module 'redux-decorated/react' {
