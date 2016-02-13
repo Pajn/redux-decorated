@@ -13,24 +13,25 @@ export function createActions(ActionDefinitions) {
 export function createReducer(initialState) {
   const actionHandlers = [];
 
-  return {
-    when(action, handler) {
-      if (handler.length === 1) {
-        const origHandler = handler;
-        handler = (state, payload) => origHandler(payload)(state);
-      }
-      actionHandlers.push({type: action.type, handler});
-      return this;
-    },
-    build() {
-      return (state, action) => actionHandlers
-          .filter(actionHandler => actionHandler.type === action.type)
-          .reduce(
-              (state, actionHandler) => actionHandler.handler(state, action.payload),
-              state || initialState
-          );
-    },
+  function reducer(state, action) {
+    return actionHandlers
+        .filter(actionHandler => actionHandler.type === action.type)
+        .reduce(
+            (state, actionHandler) => actionHandler.handler(state, action.payload),
+            state || initialState
+        );
+  }
+
+  reducer.when = (action, handler) => {
+    if (handler.length === 1) {
+      const origHandler = handler;
+      handler = (state, payload) => origHandler(payload)(state);
+    }
+    actionHandlers.push({type: action.type, handler});
+    return reducer;
   };
+
+  return reducer;
 }
 
 export function clone(object) {

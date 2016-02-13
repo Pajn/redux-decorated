@@ -1,12 +1,12 @@
 {
   "name": "redux-decorated",
-  "version": "0.1.2",
+  "version": "0.2.0",
   "description": "",
   "main": "./index.js",
   "scripts": {
     "prepublish": "babel --out-dir . src",
     "watch": "babel --out-dir . src --watch",
-    "test": "cd test && tsc && mocha specs"
+    "test": "cd test && npm run test"
   },
   "author": "Rasmus Eneman <rasmus@eneman.eu>",
   "license": "Apache-2.0",

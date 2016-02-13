@@ -15,15 +15,18 @@ export function reactStore(store) {
           let dispose;
 
           component.componentWillUnmount = componentWillUnmount
-            ? (...args) => {
+            ? function (...args) {
               dispose();
-              return componentWillUnmount.apply(component, args);
+              return componentWillUnmount.apply(this, args);
             }
             : () => dispose();
 
-          component.state = component.state || getState(store.getState());
-          dispose = store.subscribe(() =>
-            component.setState(getState(store.getState())));
+          const state = () => getState(store.getState());
+
+          component.state = component.state
+            ? {...component.state, ...state()}
+            : state();
+          dispose = store.subscribe(() => component.setState(state()));
 
           return component;
         };

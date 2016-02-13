@@ -10,14 +10,15 @@
     "filesGlob": [
         "*.ts",
         "specs/**/*.ts",
-        "../typings/*.ts",
-        "../typings.d.ts"
+        "node_modules/redux-decorated/typings.d.ts",
+        "typings/main.d.ts"
     ],
     "files": [
         "mock.ts",
         "specs/index.ts",
-        "../typings/tsd.d.ts",
-        "../typings.d.ts"
+        "specs/react.ts",
+        "node_modules/redux-decorated/typings.d.ts",
+        "typings/main.d.ts"
     ],
     "formatCodeOptions": {
         "indentSize": 2,

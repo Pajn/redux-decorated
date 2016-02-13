@@ -9,12 +9,12 @@ declare module 'redux-decorated' {
     payload?: T;
   }
   export function createActions<T>(ActionDefinitions: Class<T>): T;
-  export interface ReducerBuilder<S> {
-    when<P>(action: Action<P>, handler: (payload: P) => (state: S) => S): ReducerBuilder<S>;
-    when<P>(action: Action<P>, handler: (state: S, payload: P) => S): ReducerBuilder<S>;
-    build(): any;
+  export interface BuildableReducer<S> {
+    (state: S, action): S;
+    when<P>(action: Action<P>, handler: (payload: P) => (state: S) => S): this;
+    when<P>(action: Action<P>, handler: (state: S, payload: P) => S): this;
   }
-  export function createReducer<S extends {}>(initialState: S): ReducerBuilder<S>;
+  export function createReducer<S extends {}>(initialState: S): BuildableReducer<S>;
 
   export function clone<T>(object: T): T;
   export function updateIn<T>(path: Key|Array<Key>, newValue: any, object: T): T;
