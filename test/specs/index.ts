@@ -4,17 +4,23 @@ import {expect} from 'chai';
 import {createMockFunction} from '../mock';
 import {Action, createActions, createReducer} from 'redux-decorated';
 
-class Actions {
-  create: Action<{name: string}> = {};
-  save: Action<{}> = {};
-}
-
 describe('createActions', () => {
   it('should return an instance with type set on every action', () => {
-    const actions = createActions(Actions);
+    const actions = createActions({
+      create: {} as Action<{name: string}>,
+      save: {} as Action<{}>,
+    });
 
     expect(actions.create).to.deep.equal({type: 'create'});
     expect(actions.save).to.deep.equal({type: 'save'});
+  });
+
+  it('should keep properties set on the actions', () => {
+    const actions = createActions({
+      create: {type: 'new'} as Action<{name: string}>,
+    });
+
+    expect(actions.create).to.deep.equal({type: 'new'});
   });
 });
 
@@ -23,7 +29,7 @@ describe('createReducer', () => {
   it('should return a chainable builder', () => {
     const reducer = createReducer([]);
 
-    expect(reducer.when({}, (s, a) => s as any)).to.equal(reducer);
+    expect(reducer.when({type: 'type'}, (s, a) => s as any)).to.equal(reducer);
   });
 
   it('should call the correct handler when an action is fired', () => {

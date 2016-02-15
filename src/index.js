@@ -1,12 +1,10 @@
 export function createActions(actions) {
   return Object.freeze(
-    Object.keys(actions).reduce((actions, type) => {
-      const actionDefinition = actions[type];
-
-      actions[type] = Object.create(actionDefinition);
-      actions[type].type = type;
-      return actions;
-   }, actions));
+    Object.keys(actions).reduce(
+      (actions, type) => ({...actions, [type]: Object.assign({type}, actions[type])}),
+      actions
+    )
+  );
 }
 
 export function createReducer(initialState) {
