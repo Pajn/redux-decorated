@@ -1,14 +1,11 @@
 declare module 'redux-decorated' {
   type Key = string | number;
 
-  export interface Class<T> {
-    new (): T;
-  }
   export interface Action<T extends {}> {
-    type?: string;
+    type: string;
     payload?: T;
   }
-  export function createActions<T>(ActionDefinitions: Class<T>): T;
+  export function createActions<T>(actions: T): T;
   export interface BuildableReducer<S> {
     (state: S, action): S;
     when<P>(action: Action<P>, handler: (payload: P) => (state: S) => S): this;

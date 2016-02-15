@@ -3,7 +3,6 @@
   "version": "0.2.0",
   "description": "",
   "main": "./index.js",
-  "typings": "./typings.d.ts",
   "scripts": {
     "prepublish": "babel --out-dir . src",
     "watch": "babel --out-dir . src --watch",

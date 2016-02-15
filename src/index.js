@@ -1,13 +1,12 @@
-export function createActions(ActionDefinitions) {
-  const actionDefinitins = new ActionDefinitions();
+export function createActions(actions) {
   return Object.freeze(
-    Object.keys(actionDefinitins).reduce((actions, type) => {
-      const actionDefinition = actionDefinitins[type];
+    Object.keys(actions).reduce((actions, type) => {
+      const actionDefinition = actions[type];
 
       actions[type] = Object.create(actionDefinition);
       actions[type].type = type;
       return actions;
-   }, actionDefinitins));
+   }, actions));
 }
 
 export function createReducer(initialState) {
