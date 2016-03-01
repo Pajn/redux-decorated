@@ -4,6 +4,7 @@ declare module 'redux-decorated' {
   export interface Action<T extends {}> {
     type: string;
     payload?: T;
+    [key: string|number]: any;
   }
   export function createActions<T>(actions: T): T;
   export interface BuildableReducer<S> {
