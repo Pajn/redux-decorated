@@ -2,7 +2,7 @@ declare module 'redux-decorated' {
   type Key = string | number;
 
   export interface Action<T extends {}> {
-    type: string;
+    type?: string;
     payload?: T;
     [key: string]: any;
   }
