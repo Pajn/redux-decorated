@@ -4,11 +4,11 @@ export function createActions(actions) {
       (actions, type) => ({...actions, [type]: Object.assign({type}, actions[type])}),
       actions
     )
-  );
+  )
 }
 
 export function createReducer(initialState) {
-  const actionHandlers = [];
+  const actionHandlers = []
 
   function reducer(state, action) {
     return actionHandlers
@@ -16,55 +16,55 @@ export function createReducer(initialState) {
         .reduce(
             (state, actionHandler) => actionHandler.handler(state, action.payload),
             state || initialState
-        );
+        )
   }
 
   reducer.when = (action, handler) => {
     if (handler.length === 1) {
-      const origHandler = handler;
-      handler = (state, payload) => origHandler(payload)(state);
+      const origHandler = handler
+      handler = (state, payload) => origHandler(payload)(state)
     }
-    actionHandlers.push({type: action.type, handler});
-    return reducer;
-  };
+    actionHandlers.push({type: action.type, handler})
+    return reducer
+  }
 
-  return reducer;
+  return reducer
 }
 
 export function clone(object) {
   return Array.isArray(object)
     ? [...object]
-    : {...object};
+    : {...object}
 }
 
 export function updateIn(path, newValue, object) {
   if (arguments.length == 2) {
-    return (object) => updateIn(path, newValue, object);
+    return (object) => updateIn(path, newValue, object)
   }
 
   if (Array.isArray(path) && path.length > 1) {
-    newValue = updateIn(path.slice(1), newValue, (object || {})[path[0]]);
+    newValue = updateIn(path.slice(1), newValue, (object || {})[path[0]])
   }
 
-  const key = Array.isArray(path) ? path[0] : path;
-  const cloned = clone(object);
-  cloned[key] = newValue;
+  const key = Array.isArray(path) ? path[0] : path
+  const cloned = clone(object)
+  cloned[key] = newValue
 
-  return cloned;
+  return cloned
 }
 
 export function removeIn(path, object) {
   if (arguments.length == 1) {
-    return (object) => removeIn(path, object);
+    return (object) => removeIn(path, object)
   }
 
   if (Array.isArray(path) && path.length > 1) {
-    newValue = removeIn(path.slice(1), (object || {})[path[0]]);
+    newValue = removeIn(path.slice(1), (object || {})[path[0]])
   }
 
-  const key = Array.isArray(path) ? path[0] : path;
-  const cloned = clone(object);
-  delete cloned[key];
+  const key = Array.isArray(path) ? path[0] : path
+  const cloned = clone(object)
+  delete cloned[key]
 
-  return cloned;
+  return cloned
 }
