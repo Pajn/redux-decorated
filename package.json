@@ -7,7 +7,7 @@
   "scripts": {
     "configure": "npm-run-all configure:*",
     "configure:tsdm": "tsdm rewire",
-    "configure:mkdir": "mkdir -p test/node_modules",
+    "configure:mkdir": "mkdir -p test/node_modules && mkdir -p test/bin",
     "configure:clean": "rm -f test/node_modules/redux-decorated",
     "configure:link-tests": "ln -s ../.. test/node_modules/redux-decorated",
     "prepublish": "npm-run-all configure && babel --out-dir . src",
