@@ -6,19 +6,15 @@
     "inlineSources": false,
     "target": "es6",
     "module": "commonjs",
-    "outDir": "bin"
+    "outDir": "bin",
+    "moduleResolution": "node"
   },
   "filesGlob": [
-    "*.ts",
     "specs/**/*.ts",
-    "../typings.d.ts",
-    "../typings/tsd.d.ts",
-    "typings/main.d.ts"
+    "../typings/tsd.d.ts"
   ],
   "files": [
     "specs/index.ts",
-    "specs/react.ts",
-    "../typings.d.ts",
     "../typings/tsd.d.ts"
   ],
   "formatCodeOptions": {

@@ -2,22 +2,21 @@
 
 import {expect} from 'chai'
 import {createMockFunction} from 'mock-functions'
-import {ActionDefinition, createActions, createReducer} from 'redux-decorated'
+import {Action, createActions, createReducer, removeIn} from 'redux-decorated'
 
 describe('createActions', () => {
   it('should return an instance with type set on every action', () => {
     const actions = createActions({
-      create: {} as ActionDefinition<{name: string}>,
+      create: {} as Action<{name: string}>,
       save: {
         meta: {
-          toString: true
+          toString: true,
         }
-      } as ActionDefinition<{}>,
+      } as Action<{}>,
     })
 
-    console.log(actions.create.type.toString())
     expect(actions.create).to.deep.equal({type: 'create'})
-    expect(actions.save).to.deep.equal({type: 'save'})
+    expect(actions.save).to.deep.equal({type: 'save', meta: {toString: true}})
   })
 
   it('should keep properties set on the actions', () => {
@@ -90,7 +89,7 @@ describe('createReducer', () => {
       const stateMapper = createMockFunction()
       const handler = createMockFunction().returns(stateMapper)
       const reducer = createReducer('0')
-        .when({type: '1'}, (payload) => handler(payload))
+        .when({type: '1'}, (_, payload) => handler(payload))
 
       reducer('2', {type: '1', payload: '3'})
 
@@ -106,5 +105,16 @@ describe('createReducer', () => {
 
       expect(reducer('2', {type: '1'})).to.equal('3')
     })
+  })
+})
+
+describe('removeIn', () => {
+  it('should be able to remove a deep preoperty', () => {
+    const old = {deeply: {nested: {property: true}}}
+
+    const result = removeIn(['deeply', 'nested', 'property'], old)
+
+    expect(old.deeply.nested.property).to.be.true
+    expect(result.deeply.nested.property).to.be.undefined
   })
 })

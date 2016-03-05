@@ -20,11 +20,14 @@ export function createReducer(initialState) {
   }
 
   reducer.when = (action, handler) => {
-    if (handler.length === 1) {
-      const origHandler = handler
-      handler = (state, payload) => origHandler(payload)(state)
-    }
-    actionHandlers.push({type: action.type, handler})
+    actionHandlers.push({type: action.type, handler: (state, action) => {
+      const newState = handler(state, action)
+
+      if (typeof newState === 'function') {
+        return newState(state)
+      }
+      return newState
+    }})
     return reducer
   }
 
@@ -59,7 +62,8 @@ export function removeIn(path, object) {
   }
 
   if (Array.isArray(path) && path.length > 1) {
-    newValue = removeIn(path.slice(1), (object || {})[path[0]])
+    const newValue = removeIn(path.slice(1), (object || {})[path[0]])
+    return updateIn(path[0], newValue, object)
   }
 
   const key = Array.isArray(path) ? path[0] : path

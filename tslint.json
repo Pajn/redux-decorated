@@ -34,7 +34,6 @@
     "no-eval": true,
     "no-string-literal": false,
     "no-switch-case-fall-through": true,
-    "no-trailing-comma": false,
     "no-trailing-whitespace": true,
     "no-unused-variable": true,
     "no-unreachable": true,
@@ -48,7 +47,7 @@
     ],
     "quotemark": [true, "single", "avoid-escape"],
     "radix": true,
-    "semicolon": true,
+    "semicolon": [true, "never"],
     "triple-equals": [true, "allow-null-check"],
     "typedef-whitespace": [true, {
       "call-signature": "nospace",
