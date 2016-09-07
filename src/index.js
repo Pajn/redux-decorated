@@ -7,6 +7,13 @@ export function createActions(actions) {
   )
 }
 
+export function action(action, payload) {
+  return {
+    type: action.type,
+    payload,
+  }
+}
+
 export function createReducer(initialState) {
   const actionHandlers = []
 
@@ -19,7 +26,11 @@ export function createReducer(initialState) {
         )
   }
 
-  reducer.when = (action, handler) => {
+  function builder(state, action) {
+    return reducer(state, action)
+  }
+
+  builder.when = (action, handler) => {
     actionHandlers.push({type: action.type, handler: (state, action) => {
       const newState = handler(state, action)
 
@@ -28,10 +39,12 @@ export function createReducer(initialState) {
       }
       return newState
     }})
-    return reducer
+    return builder
   }
 
-  return reducer
+  builder.build = () => reducer
+
+  return builder
 }
 
 export function clone(object) {
@@ -57,7 +70,7 @@ export function updateIn(path, newValue, object) {
 }
 
 export function removeIn(path, object) {
-  if (arguments.length == 1) {
+  if (arguments.length === 1) {
     return (object) => removeIn(path, object)
   }
 
