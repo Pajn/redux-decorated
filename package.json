@@ -1,16 +1,15 @@
 {
   "name": "redux-decorated",
-  "version": "0.2.0-dev.4",
+  "version": "0.2.0-dev.5",
   "description": "Helpers for Redux designed to work great with Typescript",
   "main": "./index.js",
   "typings": "./typings.d.ts",
   "scripts": {
     "configure": "npm-run-all configure:*",
-    "configure:tsdm": "tsdm rewire",
     "configure:mkdir": "mkdir -p test/node_modules",
     "configure:clean": "rm -f test/node_modules/redux-decorated",
     "configure:link-tests": "ln -s ../.. test/node_modules/redux-decorated",
-    "prepublish": "npm-run-all configure && babel --out-dir . src",
+    "prepublish": "babel --out-dir . src",
     "watch": "babel --out-dir . src --watch",
     "test": "tsc -p test && mocha --harmony -r babel-polyfill test/bin",
     "test-watch": "tsc -p test --watch & mocha --harmony -r babel-polyfill --watch test/bin"
@@ -25,9 +24,6 @@
     "mocha": "^2.4.5",
     "mock-functions": "^0.1.1",
     "npm-run-all": "^1.5.1",
-    "retyped-chai-tsd-ambient": "^3.4.0-0",
-    "retyped-mocha-tsd-ambient": "^2.2.5-0",
-    "retyped-redux-tsd-ambient": "^1.0.0-0",
     "tsdm": "0.1.0-3",
     "tslint": "^3.3.0",
     "typescript": "^1.7.5"

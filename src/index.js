@@ -1,7 +1,10 @@
-export function createActions(actions) {
+export function createActions(actions, {prefix = ''} = {}) {
   return Object.freeze(
     Object.keys(actions).reduce(
-      (actions, type) => ({...actions, [type]: Object.assign({type}, actions[type])}),
+      (actions, type) => ({
+        ...actions,
+        [type]: Object.assign({type: `${prefix}${type}`}, actions[type])
+      }),
       actions
     )
   )

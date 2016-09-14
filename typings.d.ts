@@ -5,7 +5,7 @@ export interface Action<T extends {}> {
   payload?: T
   [key: string]: any
 }
-export function createActions<T>(actions: T): T
+export function createActions<T>(actions: T, options?: {prefix?: string}): T
 export function action<T>(action: Action<T>, payload: T): Action<T>
 export interface BuildableReducer<S> {
   (state: S, action): S

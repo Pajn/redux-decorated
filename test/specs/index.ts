@@ -26,6 +26,14 @@ describe('createActions', () => {
 
     expect(actions.create).to.deep.equal({type: 'new'})
   })
+
+  it('should support setting a prefx', () => {
+    const actions = createActions({
+      create: {} as Action<{name: string}>,
+    }, {prefix: 'test'})
+
+    expect(actions.create).to.deep.equal({type: 'testcreate'})
+  })
 })
 
 describe('createReducer', () => {
