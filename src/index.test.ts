@@ -1,8 +1,6 @@
-'use strict'
-
-import {expect} from 'chai'
+/// <reference types="jest" />
 import {createMockFunction} from 'mock-functions'
-import {Action, createActions, createReducer, removeIn} from 'redux-decorated'
+import {Action, createActions, createReducer, removeIn} from './index'
 
 describe('createActions', () => {
   it('should return an instance with type set on every action', () => {
@@ -15,8 +13,8 @@ describe('createActions', () => {
       } as Action<{}>,
     })
 
-    expect(actions.create).to.deep.equal({type: 'create'})
-    expect(actions.save).to.deep.equal({type: 'save', meta: {toString: true}})
+    expect(actions.create).toEqual({type: 'create'})
+    expect(actions.save).toEqual({type: 'save', meta: {toString: true}})
   })
 
   it('should keep properties set on the actions', () => {
@@ -24,7 +22,7 @@ describe('createActions', () => {
       create: {type: 'new'} as Action<{name: string}>,
     })
 
-    expect(actions.create).to.deep.equal({type: 'new'})
+    expect(actions.create).toEqual({type: 'new'})
   })
 
   it('should support setting a prefx', () => {
@@ -32,7 +30,7 @@ describe('createActions', () => {
       create: {} as Action<{name: string}>,
     }, {prefix: 'test'})
 
-    expect(actions.create).to.deep.equal({type: 'testcreate'})
+    expect(actions.create).toEqual({type: 'testcreate'})
   })
 })
 
@@ -41,7 +39,7 @@ describe('createReducer', () => {
   it('should return a chainable builder', () => {
     const reducer = createReducer([])
 
-    expect(reducer.when({type: 'type'}, (s, a) => s as any)).to.equal(reducer)
+    expect(reducer.when({type: 'type'}, (s, a) => s as any)).toEqual(reducer)
   })
 
   it('should call the correct handler when an action is fired', () => {
@@ -51,9 +49,9 @@ describe('createReducer', () => {
       .when({type: '1'}, handler1)
       .when({type: '2'}, handler2)
 
-    expect(reducer(undefined, {type: '1'})).to.equal('1')
-    expect(handler1.calls.length).to.equal(1)
-    expect(handler2.calls.length).to.equal(0)
+    expect(reducer([], {type: '1'})).toEqual('1')
+    expect(handler1.calls.length).toEqual(1)
+    expect(handler2.calls.length).toEqual(0)
   })
 
   it('should return the initial state if no action matches', () => {
@@ -63,9 +61,9 @@ describe('createReducer', () => {
       .when({type: '1'}, handler1)
       .when({type: '2'}, handler2)
 
-    expect(reducer(undefined, {type: '3'})).to.equal('0')
-    expect(handler1.calls.length).to.equal(0)
-    expect(handler2.calls.length).to.equal(0)
+    expect(reducer('', {type: '3'})).toEqual('0')
+    expect(handler1.calls.length).toEqual(0)
+    expect(handler2.calls.length).toEqual(0)
   })
 
   it('should return the current state if no action matches', () => {
@@ -75,9 +73,9 @@ describe('createReducer', () => {
       .when({type: '1'}, handler1)
       .when({type: '2'}, handler2)
 
-    expect(reducer('3', {type: '0'})).to.equal('3')
-    expect(handler1.calls.length).to.equal(0)
-    expect(handler2.calls.length).to.equal(0)
+    expect(reducer('3', {type: '0'})).toEqual('3')
+    expect(handler1.calls.length).toEqual(0)
+    expect(handler2.calls.length).toEqual(0)
   })
 
   it('should pass the payload and state to the handler', () => {
@@ -87,8 +85,8 @@ describe('createReducer', () => {
 
     reducer('2', {type: '1', payload: '3'})
 
-    expect(handler.calls.length).to.equal(1)
-    expect(handler.calls[0].args).to.deep.equal(['2', '3'])
+    expect(handler.calls.length).toEqual(1)
+    expect(handler.calls[0].args).toEqual(['2', '3'])
   })
 
   describe('handlers returning a function to modify state', () => {
@@ -101,17 +99,17 @@ describe('createReducer', () => {
 
       reducer('2', {type: '1', payload: '3'})
 
-      expect(handler.calls.length).to.equal(1)
-      expect(stateMapper.calls.length).to.equal(1)
-      expect(handler.calls[0].args).to.deep.equal(['3'])
-      expect(stateMapper.calls[0].args).to.deep.equal(['2'])
+      expect(handler.calls.length).toEqual(1)
+      expect(stateMapper.calls.length).toEqual(1)
+      expect(handler.calls[0].args).toEqual(['3'])
+      expect(stateMapper.calls[0].args).toEqual(['2'])
     })
 
     it('should return the value returned by the handler', () => {
       const reducer = createReducer('0')
         .when({type: '1'}, _ => _ => '3')
 
-      expect(reducer('2', {type: '1'})).to.equal('3')
+      expect(reducer('2', {type: '1'})).toEqual('3')
     })
   })
 })
@@ -122,7 +120,16 @@ describe('removeIn', () => {
 
     const result = removeIn(['deeply', 'nested', 'property'], old)
 
-    expect(old.deeply.nested.property).to.be.true
-    expect(result.deeply.nested.property).to.be.undefined
+    expect(old.deeply.nested.property).toBe(true)
+    expect(result.deeply.nested.property).not.toBeDefined()
+  })
+
+  it('should be able to remove an intem in an array', () => {
+    const old = [1, 2, 3]
+
+    const result = removeIn(1, old)
+
+    expect(old).toEqual([1, 2, 3])
+    expect(result).toEqual([1, 3])
   })
 })

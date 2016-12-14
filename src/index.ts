@@ -1,24 +1,43 @@
-export function createActions(actions, {prefix = ''} = {}) {
+export type Key = string | number
+
+export interface Action<T extends {}> {
+  type?: string
+  payload?: T
+  [key: string]: any
+}
+
+export interface BuildableReducer<S> {
+  (state: S, action): S
+  when<P>(action: Action<P>, handler: (state: S, payload: P) => S | ((state: S) => S)): this
+  build(): (state: S, action) => S
+}
+
+export function createActions<T>(actions: T, {prefix = ''}: {prefix?: string} = {}): T {
   return Object.freeze(
     Object.keys(actions).reduce(
       (actions, type) => ({
-        ...actions,
-        [type]: Object.assign({type: `${prefix}${type}`}, actions[type])
+        ...actions as any,
+        [type]: {type: `${prefix}${type}`, ...actions[type]},
       }),
       actions
     )
   )
 }
 
-export function action(action, payload) {
+export function action<T>(action: Action<T>, payload: T): Action<T> {
   return {
     type: action.type,
     payload,
   }
 }
 
-export function createReducer(initialState) {
-  const actionHandlers = []
+type ActionHandler = {
+  type: string
+  handler: (state, action) => any
+}
+
+export function createReducer<T>(initialState: T): BuildableReducer<T> {
+  const actionHandlers: Array<ActionHandler> = []
 
   function reducer(state, action) {
     return actionHandlers
@@ -29,9 +48,9 @@ export function createReducer(initialState) {
         )
   }
 
-  function builder(state, action) {
+  const builder = function builder(state, action) {
     return reducer(state, action)
-  }
+  } as BuildableReducer<any>
 
   builder.when = (action, handler) => {
     actionHandlers.push({type: action.type, handler: (state, action) => {
@@ -50,14 +69,16 @@ export function createReducer(initialState) {
   return builder
 }
 
-export function clone(object) {
+export function clone<T>(object: T): T {
   return Array.isArray(object)
     ? [...object]
-    : {...object}
+    : {...object as any}
 }
 
-export function updateIn(path, newValue, object) {
-  if (arguments.length == 2) {
+export function updateIn(path: Key|Array<Key>, newValue: any): (object) => any
+export function updateIn<T>(path: Key|Array<Key>, newValue: any, object: T): T
+export function updateIn(path, newValue, object?) {
+  if (arguments.length === 2) {
     return (object) => updateIn(path, newValue, object)
   }
 
@@ -72,7 +93,9 @@ export function updateIn(path, newValue, object) {
   return cloned
 }
 
-export function removeIn(path, object) {
+export function removeIn(path: Key|Array<Key>): (object) => any
+export function removeIn<T>(path: Key|Array<Key>, object: T): T
+export function removeIn(path, object?) {
   if (arguments.length === 1) {
     return (object) => removeIn(path, object)
   }

@@ -2,37 +2,25 @@
   "name": "redux-decorated",
   "version": "0.2.0-dev.5",
   "description": "Helpers for Redux designed to work great with Typescript",
-  "main": "./index.js",
-  "typings": "./typings.d.ts",
+  "main": "./dist/src/index.js",
+  "typings": "./dist/src/index.d.ts",
   "scripts": {
-    "configure": "npm-run-all configure:*",
-    "configure:mkdir": "mkdir -p test/node_modules",
-    "configure:clean": "rm -f test/node_modules/redux-decorated",
-    "configure:link-tests": "ln -s ../.. test/node_modules/redux-decorated",
-    "prepublish": "babel --out-dir . src",
-    "watch": "babel --out-dir . src --watch",
-    "test": "tsc -p test && mocha --harmony -r babel-polyfill test/bin",
-    "test-watch": "tsc -p test --watch & mocha --harmony -r babel-polyfill --watch test/bin"
+    "prepublish": "tscomp build",
+    "build": "tscomp build",
+    "watch": "tscomp watch",
+    "test": "tscomp test"
   },
   "author": "Rasmus Eneman <rasmus@eneman.eu>",
   "license": "Apache-2.0",
   "devDependencies": {
-    "babel-cli": "^6.3.15",
-    "babel-preset-es2015": "^6.3.13",
-    "babel-preset-stage-2": "^6.3.13",
-    "chai": "^3.5.0",
-    "mocha": "^2.4.5",
+    "@types/jest": "^16.0.1",
     "mock-functions": "^0.1.1",
-    "npm-run-all": "^1.5.1",
-    "tsdm": "0.1.0-3",
+    "tscomp": "^0.7.4",
     "tslint": "^3.3.0",
-    "typescript": "^1.7.5"
+    "tslint-config-beanloop": "^0.1.0"
   },
   "peerDependencies": {
     "redux": "3.x"
-  },
-  "directories": {
-    "lib": "./lib"
   },
   "bugs": {
     "url": "https://github.com/Pajn/redux-decorated/issues"
