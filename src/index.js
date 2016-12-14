@@ -84,7 +84,11 @@ export function removeIn(path, object) {
 
   const key = Array.isArray(path) ? path[0] : path
   const cloned = clone(object)
-  delete cloned[key]
+  if (Array.isArray(cloned)) {
+    cloned.splice(key, 1)
+  } else {
+    delete cloned[key]
+  }
 
   return cloned
 }
