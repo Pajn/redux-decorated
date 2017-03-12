@@ -15,8 +15,8 @@
   "devDependencies": {
     "@types/jest": "^16.0.1",
     "mock-functions": "^0.1.1",
-    "tscomp": "^0.7.4",
-    "tslint": "^3.3.0",
+    "tscomp": "^0.9.1-dev3",
+    "tslint": "^4.5.1",
     "tslint-config-beanloop": "^0.1.0"
   },
   "peerDependencies": {

@@ -1,6 +1,7 @@
 "use strict";
-/// <reference types="jest" />
 
+Object.defineProperty(exports, "__esModule", { value: true });
+/// <reference types="jest" />
 var mock_functions_1 = require("mock-functions");
 var index_1 = require("./index");
 describe('createActions', function () {
