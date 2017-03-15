@@ -122,7 +122,7 @@ export function updateIn<T, K extends keyof T>(path: K, newValue: T[K], object: 
 export function updateIn<T, KA extends keyof T, KB extends keyof T[KA]>(path: [KA, KB], newValue: T[KA][KB], object: T): T
 export function updateIn<T, KA extends keyof T, KB extends keyof T[KA], KC extends keyof T[KA][KB]>(path: [KA, KB, KC], newValue: T[KA][KB][KC], object: T): T
 export function updateIn<T, KA extends keyof T, KB extends keyof T[KA], KC extends keyof T[KA][KB], KD extends keyof T[KA][KB][KC]>(path: [KA, KB, KC, KD], newValue: T[KA][KB][KC][KD], object: T): T
-export function updateIn<T, KA extends keyof T, KB extends keyof T[KA], KC extends keyof T[KA][KB], KE extends keyof T[KA][KB][KC][KD]>(path: [KA, KB, KC, KD, KE], newValue: T[KA][KB][KC][KD][KE], object: T): T
+export function updateIn<T, KA extends keyof T, KB extends keyof T[KA], KC extends keyof T[KA][KB], KD extends keyof T[KA][KB][KC], KE extends keyof T[KA][KB][KC][KD]>(path: [KA, KB, KC, KD, KE], newValue: T[KA][KB][KC][KD][KE], object: T): T
 export function updateIn(path, newValue, object) {
   return updateInAny(path, newValue, object)
 }
